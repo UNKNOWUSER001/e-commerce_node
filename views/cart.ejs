@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <%- include('navbar') %>
+    <div class="container table my-4">
+        <% if (displayCart.items.length > 0) { %>
+        <table id="myTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th> 
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%displayCart.items.forEach(function(product){%>
+                <tr>
+                    <td><a href="/products/detailproduct/<%= product.item %>"><%= product.item %></a>
+                    </td>
+                    <td><%=product.title%></td>
+                    <td><%=product.qty%></td>
+                    <td><%=formatMoney(product.price)%></td> 
+                    <td><%=formatMoney(product.price * product.qty)%></td>
+                    <td><form action="/products/cart/delete" method="post"><input type="hidden" name="itemId" value="<%= product.item %>"><button type="submit" class="btn btn-danger">Delete</button></form></td>
+                </tr>
+                <%})%>
+            </tbody>
+        </table>
+        <h2 align="right-">ทั้งหมด: <%=formatMoney(displayCart.total)%></h2>
+        <form class="form-group" action="/payment" method="post"> 
+            <script
+            src="http://checkout.stripe.com/checkout.js"
+            class="stripe-button"
+            data-name="Shop"
+            data-key="pk_test_51NFK05JqBizbNzBL99NIR1KHrMgfYObf1VRaa19Wu1SoBnoMrNALEgO9n4wKeYvUij0LCQPxbuhQTZGajlnZ0xcH009F72We4h"
+            data-description="Shop everything" 
+            data-amount="<%=displayCart.total*100%>"
+            data-currency="thb"
+            ></script>
+            <input type="hidden" name="amount" value="<%=displayCart.total*100%>">
+
+        </form>
+        <% } else { %>
+            <div class="alert alert-danger">ไม่มีสินค้าในตะกร้า</div>
+        <% } %>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable({
+                columnDefs: [
+                    { targets: [0, 1, 2, 3, 4,], className: 'my-class' },
+                ]
+            });
+        });
+    </script>
+</body>
+</html>

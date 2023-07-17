@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <%- include('navbar') %>
+    <div class="row">
+        <%- include('sidebar') %>
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-8 my-4">
+            <h2 align="center">แบบฟอร์มบันทึกหมวดหมู่สินค้า</h2>
+            <% if (locals.errors) { %>
+                <ul class="alert alert-danger" role="alert">
+                    <% errors.forEach(function(error) { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            <% } %>            
+            <form class="" action="/categories/add" method="post">
+                <div class="form-group">
+                    <label for="">ชื่อหมวดหมู่สินค้า</label>
+                    <input type="text" name="name" value="" class="form-control">
+                </div>
+                <input type="submit" value="บันทึกข้อมูลสินค้า" class="btn btn-success">
+            </form>
+            <!-- /.row -->
+        </div>
+        <!-- /.col-lg-9 -->
+    </div>
+
+    <!-- Select category and add delete and edit buttons -->
+    <div class="row justify-content-center my-4">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <select name="category" id="category" class="form-control">
+                    <option value="">--------</option>
+                    <% categories.forEach(function(category) { %>
+                        <option value="<%= category._id %>"><%= category.name %></option>
+                    <% }) %>
+                </select>
+                <div class="input-group-append">
+                    <button onclick="deleteCategory()" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script>
+        function deleteCategory() {
+            var categoryId = document.getElementById("category").value;
+            if (categoryId !== "") {
+                if (confirm("คุณต้องการลบหมวดหมู่สินค้านี้ใช่หรือไม่?")) {
+                    fetch(`/categories/delete/${categoryId}`, { method: "POST" })
+                        .then(() => {
+                            location.reload();
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

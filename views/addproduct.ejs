@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <%- include('navbar') %>
+    <div class="">
+        <!-- /.col-lg-3 -->
+        <div class="col-lg-8 my-4">
+            <h2 align="center">แบบฟอร์มบันทึกสินค้า</h2>
+            <% if (locals.errors) { %>
+                <ul class="alert alert-danger" role="alert">
+                    <% Object.values(errors).forEach(function(error) { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            <% } %>            
+            <form cl ass="" action="/products/add" method="post" >
+                <div class="form-group">
+                    <label for="">ชื่อสินค้า</label>
+                    <input type="text" name="name" value="" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">รายละเอียด</label>
+                    <textarea name="description" rows="4" cols="80" class="form-control" ></textarea>
+
+                </div>
+                <div class="form-group">
+                    <label for="">ราคา</label>
+                    <input type="number" name="price" value="" min =1 class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">หมวดหมู่</label>
+                    <select class="form-control" name="category">
+                        <option value=""  aria-placeholder="กรุณาเลือกสินค้า"></option>
+                        <% categories.forEach(function(category) { %>
+                            <option value="<%=category.name%>"><%=category.name%></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">จำนวนสินค้า</label>
+                    <input type="number" name="stock" value="" min =1 class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">ภาพสินค้า(กรุณาใส่เป็นลิ้งภาพ)</label>
+                    <input type="url" class="form-control" name="img" >
+                </div>
+                <input type="submit" value="บันทึกข้อมูลสินค้า" class="btn btn-success" >
+            </form>
+            <!-- /.row -->
+        </div>
+        <!-- /.col-lg-9 -->
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- Page Content -->
+  <%- include('navbar') %>
+  <div class="container">
+
+    <div class="row">
+
+      <%- include('sidebar')%>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <div class="row row-my-4">
+        <% products.forEach(function(item){ %>
+        <div class="card mt-4">
+          <img class="card-img-top img-fluid" src="<%=item.img%>" alt="">
+          <div class="card-body">
+            <h3 class="card-title">ชื่อสินค้า : <%= item.name %></h3>
+            <h4>ราคา : <%= formatMoney(item.price) %> บาท</h4>
+            <p class="card-text"><%= item.description %></p>
+            <% if (item.stock === 0) { %>
+              <button class="btn btn-secondary" disabled>สินค้าหมด</button>
+            <%}else{%>
+            <form class="form=group" action="/products/cart/" method="post">
+              <input type="hidden" name="item_id" value="<%=item._id%>">
+              <input type="submit" name="" value="เพิ่มลงตะกร้า" class="btn btn-success">
+            <%}%>
+          </form>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <%if(products.length === 0){%>
+        <div class="row-my-4">
+          <div class="alert alert-danger">ไม่พบสินค้าในหมวดหมู่นี้</div>
+        </div>
+      <%}%>
+      <!-- /.col-lg-9 -->
+      </div>
+    </div>
+
+  </div>
+  <%if(products.length === 0){%>
+    <br><br><br><br><br><br><br><br>
+  <%}%>
+  <!-- /.container -->
+  
+
+  <!-- Footer -->
+  
+
+</body>
+
+</html>
